@@ -938,6 +938,7 @@ let currentMetric = 'e1rm';
 let progressTimeRange = '1y';
 let weekRange = 4;
 let progressChart = null, muscleChart = null, freqChart = null;
+ let customMuscleMap = {};  // ← add this line here
 
 // Plan state
 let templates = [];
@@ -2085,7 +2086,7 @@ function renderVolumeSection(plan) {
 
 // ─── Warnings ─────────────────────────────────────────────────────────────────
 // ─── Custom muscle mappings ───────────────────────────────────────────────────
-let customMuscleMap = {};
+
 let pendingUnknowns = [];
 let unknownSelections = {};
 const ALL_MUSCLES = Object.keys(MUSCLE_COLORS);
