@@ -938,7 +938,13 @@ let currentMetric = 'e1rm';
 let progressTimeRange = '1y';
 let weekRange = 4;
 let progressChart = null, muscleChart = null, freqChart = null;
- let customMuscleMap = {};  // ← add this line here
+let customMuscleMap = {};  // ← add this line here
+let dragIdx = null;
+let activePicker = null;
+let customMuscleMap = {};
+let pendingUnknowns = [];
+let unknownSelections = {};
+let _pendingImport = null;
 
 // Plan state
 let templates = [];
@@ -1775,7 +1781,6 @@ function removeEditorExercise(i) {
 }
 
 // Drag to reorder
-let dragIdx = null;
 function dragStart(e, i) { dragIdx = i; e.dataTransfer.effectAllowed = 'move'; }
 function dragOver(e, i) { e.preventDefault(); }
 function dragDrop(e, i) {
@@ -1975,7 +1980,6 @@ function renderDayGrid(plan) {
 }
 
 // Day picker
-let activePicker = null;
 function closeAllDayPickers() {
   document.querySelectorAll('.day-picker-dropdown').forEach(d => d.remove());
   activePicker = null;
@@ -2087,8 +2091,6 @@ function renderVolumeSection(plan) {
 // ─── Warnings ─────────────────────────────────────────────────────────────────
 // ─── Custom muscle mappings ───────────────────────────────────────────────────
 
-let pendingUnknowns = [];
-let unknownSelections = {};
 const ALL_MUSCLES = Object.keys(MUSCLE_COLORS);
 
 function saveCustomMuscleMap() {
@@ -2233,8 +2235,6 @@ function doExport() {
 }
 
 // ─── Import ───────────────────────────────────────────────────────────────────
-let _pendingImport = null; // { conflicts, clean, data }
-
 function handleImport(e) {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
